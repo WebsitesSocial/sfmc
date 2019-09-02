@@ -1,38 +1,10 @@
-$(document).ready(function(){
-  $("button").click(function(){
-      loginsf(function(data) { 
-         $.ajax({
-            type: "GET",
-            contentType: 'application/json',
-            url:'https://www.homeofufc.com/SBU-Forms-master/test.html/',  
-            cache :false,
-              headers: {'Authorization': 'Bearer '+data},
-            dataType: 'json',
-            success: function (data) {
-                
-            },
-            error : function(jqXHR, textStatus, errorThrown) {
-                console.log('Error: '+jqXHR.status);
-                console.log('textStatus: '+textStatus)
-               } 
-         });
-      });    
-  });
-});
+const express = require('express')
+const path = require('path')
+const PORT = process.env.PORT || 5000
 
-function loginsf(fn){
-   $.ajax({
-          type: 'POST',
-          crossOrigin: true,
-          url: 'https://mc7l7fypk60zp-h7jf6n349dqp54.auth.marketingcloudapis.com/v2/token',
-          dataType: 'json',
-          cache :false,
-          data : {"grant_type":"password","client_id":"7j3fqj0n0nq7kwgf4a96a8db", "client_secret":"lGDWgIVsL0L8aL0eEzM8ePDJ","username":"sumit.saggar@alhgroup.com.au","password":"Password2@eyJhbGciOiJIUzI1NiIsImtpZCI6IjEiLCJ2ZXIiOiIxIiwidHlwIjoiSldUIn0.eyJhY2Nlc3NfdG9rZW4iOiJaWEI3b2JldEJIQ242aVUwY2E3WXpHMGwiLCJjbGllbnRfaWQiOiI3ajNmcWowbjBucTdrd2dmNGE5NmE4ZGIiLCJlaWQiOjEwMDAxNDU0Miwic3RhY2tfa2V5IjoiUzEwIiwicGxhdGZvcm1fdmVyc2lvbiI6MiwiY2xpZW50X3R5cGUiOiJTZXJ2ZXJUb1NlcnZlciJ9.utdtKcy_lau1ApVEp1OruehTWxEvUTJ4JVotSqpj-Xg.0LucP7VRJ5mW5JBzlWNWGlxRy6dvZt-tGob-OAMFoh7IXfmSKr-bn-WPbiHoViVjtR31p8MLXGnc7iUvUu-WkEFxqjdpxO-ctSzC3_i-xMNgmoLlEPtbvQGPtjuZbEz2-d3fdqzu-fEtWPGWSX1xHSphz7dssIBGFu022g20AkngzOUa3k0"},
-          success : function (data) {
-           fn(data.access_token);
-          },
-          error : function (data, errorThrown,status) {
-
-          }
-  });
-}
+express()
+  .use(express.static(path.join(__dirname, 'public')))
+  .set('views', path.join(__dirname, 'views'))
+  .set('view engine', 'ejs')
+  .get('/', (req, res) => res.render('pages/index'))
+  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
