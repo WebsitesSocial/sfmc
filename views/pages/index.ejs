@@ -3,45 +3,73 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script>
-        $(document).ready(function(){
-            $("button").click(function(){
-                loginsf(function(data) { 
-                   $.ajax({
-                      type: "GET",
-                      contentType: 'application/json',
-                      url:'https://mc7l7fypk60zp-h7jf6n349dqp54.rest.marketingcloudapis.com', 
-                      cache :false,
-                        headers: {'Authorization': 'Bearer '+data},
-                      dataType: 'json',
-                      success: function (data) {
-                          
-                      },
-                      error : function(jqXHR, textStatus, errorThrown) {
-                          console.log('Error: '+jqXHR.status);
-                          console.log('textStatus: '+textStatus)
-                         } 
-                   });
-                });    
-            });
-        });
-        
-        function loginsf(fn){
-             $.ajax({
-                    type: 'POST',
-                    crossOrigin: true,
-                    url: 'https://mc7l7fypk60zp-h7jf6n349dqp54.auth.marketingcloudapis.com',
-                    dataType: 'json',
-                    cache :false,
-                    data : {"grant_type":"password","client_id":"7j3fqj0n0nq7kwgf4a96a8db", "client_secret":"lGDWgIVsL0L8aL0eEzM8ePDJ","username":"sumit.saggar@alhgroup.com.au","password":"Password2@45632"},
-                    success : function (data) {
-                     fn(data.access_token);
-                    },
-                    error : function (data, errorThrown,status) {
-        
+ $(function() {
+                $(".submit").click(function() {
+                    var CustomerFirstName = $("#CustomerFirstName").val();
+                    var CustomerLastName = $("#CustomerLastName").val();
+                    var Phone = $("#Phone").val();
+                    var Postcode = $("#Postcode").val();
+                    var CustomerEmail = $("#CustomerEmail").val();
+                    var VenueID = $("#VenueID").val();
+                     var dataString = 'CustomerFirstName=' + CustomerFirstName + '&CustomerLastName=' + CustomerLastName + '&Phone=' + Phone + '&Postcode=' + Postcode + '&CustomerEmail=' + CustomerEmail;
+                     console.log(dataString);
+                     var myObject = new Object();
+                      myObject.CustomerFirstName = CustomerFirstName;
+                      myObject.CustomerLastName = CustomerLastName;
+                      myObject.Phone = Phone;
+                      myObject.Postcode = Postcode;
+                      myObject.CustomerEmail = CustomerEmail;
+                      myObject.VenueID = VenueID;
+                   // var dataString = 'CustomerFirstName=' + CustomerFirstName + '&CustomerLastName=' + CustomerLastName + '&Phone=' + Phone + '&Postcode=' + Postcode + '&CustomerEmail=' + CustomerEmail;
+                    //alert(myObject);
+
+                    //console.log(myObject);
+                    //console.log(JSON.parse(myObject));
+                    //console.log(newdata);
+                    
+                    var accountInfo = {
+                      "CustomerFirstName": CustomerFirstName,
+                      "CustomerLastName": CustomerLastName,
+                      "Phone": Phone,
+                      "Postcode": Postcode,
+                      "CustomerEmail": CustomerEmail
+                    };
+                    var contactinfo = JSON.stringify(accountInfo);
+                    console.log(contactinfo);
+                    var token = "eyJhbGciOiJIUzI1NiIsImtpZCI6IjEiLCJ2ZXIiOiIxIiwidHlwIjoiSldUIn0.eyJhY2Nlc3NfdG9rZW4iOiJaQTJqc1c1QmNEYnpUMHFxOGVwbUR0UEMiLCJjbGllbnRfaWQiOiI3ajNmcWowbjBucTdrd2dmNGE5NmE4ZGIiLCJlaWQiOjEwMDAxNDU0Miwic3RhY2tfa2V5IjoiUzEwIiwicGxhdGZvcm1fdmVyc2lvbiI6MiwiY2xpZW50X3R5cGUiOiJTZXJ2ZXJUb1NlcnZlciJ9.yzPyn2Wq8lDRsGAXlAS2aqDbeQsxPsQpK41LNLlZzGE.TJzxDP--flwGpeijn777NuMjFHREArkJ7kD_BJxTnmE2Y6L_MQYowUnaFVdCJBM_b-rjf1fcXErj5x2-v3nAsgaHbTwb_AXd-1Mrauxhx8ktv5WxcB8JWQZXG0noaQLPGWNQu7fXJHPkBYQDsfJegiBUkf_kDkHnfRQ1w-C89JJRW1CJEAw";
+                    if (CustomerFirstName == '' || Postcode == '' || Phone == '' || CustomerEmail == '') {
+                        $('.success').fadeOut(200).hide();
+    
+                        $('.error').fadeOut(200).show();
+                        
                     }
-            });
-          }
-            
+                    
+                    else {
+                        $.ajax({
+                            type: "POST",
+                            contentType: 'application/json',
+                            crossOrigin: true,
+                            data: contactinfo,
+                            cache :false,
+                            url: "https://mc7l7fypk60zp-h7jf6n349dqp54.rest.marketingcloudapis.com/messaging/v1/messageDefinitionSends/key:45632/send",
+                            headers: {
+                            'Authorization': 'Bearer'+token,
+                            },
+                            dataType: 'json',
+                            success: function(responseData, status, xhr) {
+                            console.log(responseData);
+                            },
+                            error: function(request, status, error) {
+                            console.log(request.responseText);
+                            }
+                        });
+    
+                    }
+    
+                    return false;
+                });
+    
+            }); 
         </script>
 </head>
 
@@ -50,9 +78,104 @@
 
 <div class="jumbotron text-center">
   <div class="container">
-      <div id="div1"><h2>jQuery AJAX test</h2></div>
+      <form autocomplete="on" ac class="text-center border border-light p-5" style="background:rgba(253,255,255,0.9); height: 80vh; overflow-y: auto">
+          <p class="h4 mb-4">Subscribe to our newsletter</p>
 
-      <button>Get External Content</button>
+          <p>
+            Join our mailing list. We'll update you with all the news from your local.
+          </p>
+           <hr />
+          <!-- Name -->
+          <input
+            type="text"
+            id="CustomerFirstName"
+            class="form-control mb-2"
+            placeholder="First Name"
+          />
+          <!-- Last Name -->
+          <input
+          type="text"
+          id="CustomerLastName"
+          class="form-control mb-2"
+          placeholder="Last Name"
+        />       
+
+          <!-- Email -->
+          <input
+            type="email"
+            id="CustomerEmail"
+            class="form-control mb-2"
+            placeholder="E-mail"
+          />
+
+          <!-- Telephone -->
+          <input
+          type="tel"
+          id="Phone"
+          class="form-control mb-2"
+          placeholder="Mobile No."
+        />
+
+          <!--- DOB -->
+          <!-- <input placeholder="Date of Birth" type="text" id="DOB" class="form-control datepicker mb-2" /> -->
+
+          <!-- Post Code -->
+          <input
+          type="number"
+          id="Postcode"
+          class="form-control mb-2"
+          placeholder="Post Code"
+        />
+        
+        <!-- Sign in button -->
+        <div class="buttons">
+          <input type="submit" value="Submit" style=" background:#0060a1; color:#FFFFFF; font-size:14px; border:1px solid #0060a1; margin-left:12px" class="submit" /><span class="error" style="display:none"> Please Enter Valid Data</span><span class="success" style="display:none"> Registration Successfully Completed..........</span>
+      </div>
+        <!-- <button class="btn btn-info btn-block mb-3 mt-3" type="submit">Submit</button> -->
+        <span class="error" style="display:none"> Please Enter Valid Data</span>
+        <span class="success" style="display:none"> Registration Successfully</span>
+        <!-- Form Type
+          <input
+            type="text"
+            id="form-type"
+            class="form-control mb-2"
+            placeholder="Form Type - Hidden"
+          /> -->
+
+        <!-- Venue Id -->
+            <input
+            type="text"
+            id="VenueID"
+            class="form-control mb-2"
+            placeholder="Venue ID -  Hidden"
+          /> 
+        <!-- Tagged As -->
+            <!-- <input
+            type="text"
+            id="tagged-as"
+            class="form-control mb-2"
+            placeholder="Tagged as - Hidden"
+          /> -->
+        <!-- Campaign Tag -->
+            <!-- <input
+            type="text"
+            id="form-type"
+            class="form-control mb-2"
+            placeholder="Campaign Tag - Hidden"
+          /> -->
+
+        <!-- Form ID -->
+            <!-- <input
+            type="text"
+            id="form-type"
+            class="form-control mb-2"
+            placeholder="Form ID - Hidden"
+          /> -->
+        <!-- Sign Up Date -->
+            <!-- <input placeholder="Sign Up date - Hidden" type="text" id="DOB" class="form-control datepicker mb-4" /> -->
+
+
+        </form>
   </div>
 </div>
 
