@@ -2,65 +2,60 @@
 <html>
 <head>
   <% include ../partials/header.ejs %>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script>
-$(document).ready(function(){
-    $("button").click(function(){
-        loginsf(function(data) { 
+  <script>
+      $(document).ready(function(){
+          $("button").click(function(){
+              loginsf(function(data) { 
+                 $.ajax({
+                    type: "GET",
+                    contentType: 'application/json',
+                    url:'https://mc7l7fypk60zp-h7jf6n349dqp54.rest.marketingcloudapis.com', 
+                    cache :false,
+                      headers: {'Authorization': 'Bearer '+data},
+                    dataType: 'json',
+                    success: function (data) {
+                        
+                    },
+                    error : function(jqXHR, textStatus, errorThrown) {
+                        console.log('Error: '+jqXHR.status);
+                        console.log('textStatus: '+textStatus)
+                       } 
+                 });
+              });    
+          });
+      });
+      
+      function loginsf(fn){
            $.ajax({
-              type: "GET",
-              contentType: 'application/json',
-              url:'https://mc7l7fypk60zp-h7jf6n349dqp54.rest.marketingcloudapis.com', 
-              cache :false,
-                headers: {'Authorization': 'Bearer '+data},
-              dataType: 'json',
-              success: function (data) {
-                  
-              },
-              error : function(jqXHR, textStatus, errorThrown) {
-                  console.log('Error: '+jqXHR.status);
-                  console.log('textStatus: '+textStatus)
-                 } 
-           });
-        });    
-    });
-});
-
-function loginsf(fn){
-     $.ajax({
-            type: 'POST',
-            crossOrigin: true,
-            url: 'https://mc7l7fypk60zp-h7jf6n349dqp54.auth.marketingcloudapis.com',
-            dataType: 'json',
-            cache :false,
-            data : {"grant_type":"password","client_id":"7j3fqj0n0nq7kwgf4a96a8db", "client_secret":"lGDWgIVsL0L8aL0eEzM8ePDJ","username":"sumit.saggar@alhgroup.com.au","password":"Password2@ secritytoken"},
-            success : function (data) {
-             fn(data.access_token);
-            },
-            error : function (data, errorThrown,status) {
-
-            }
-    });
-  }
-    
-</script>
+                  type: 'POST',
+                  crossOrigin: true,
+                  url: 'https://mc7l7fypk60zp-h7jf6n349dqp54.auth.marketingcloudapis.com',
+                  dataType: 'json',
+                  cache :false,
+                  data : {"grant_type":"password","client_id":"7j3fqj0n0nq7kwgf4a96a8db", "client_secret":"lGDWgIVsL0L8aL0eEzM8ePDJ","username":"sumit.saggar@alhgroup.com.au","password":"Password2@ secritytoken"},
+                  success : function (data) {
+                   fn(data.access_token);
+                  },
+                  error : function (data, errorThrown,status) {
+      
+                  }
+          });
+        }
+          
+      </script>
 </head>
 
 <body>
 
   <% include ../partials/nav.ejs %>
 
+<div class="jumbotron text-center">
+  <div class="container">
+      <div id="div1"><h2>jQuery AJAX test</h2></div>
 
-<div class="container">
-
-  <div class="row">
-    <div class="col-md-6">
-        <div id="div1"><h2>jQuery AJAX test</h2></div>
-
-        <button>Get External Content</button>
-    </div>
-    </div>
-    </div>
+      <button>Get External Content</button>
+  </div>
+</div>
 
 
 </body>
