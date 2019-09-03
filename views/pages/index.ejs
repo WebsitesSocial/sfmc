@@ -1,47 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script>
-        $(document).ready(function(){
-            $("button").click(function(){
-                loginsf(function(data) { 
-                   $.ajax({
-                      type: "GET",
-                      contentType: 'application/json',
-                      url:'https://mc7l7fypk60zp-h7jf6n349dqp54.rest.marketingcloudapis.com', 
-                      cache :false,
-                        headers: {'Authorization': 'Bearer '+data},
-                      dataType: 'json',
-                      success: function (data) {
-                          
-                      },
-                      error : function(jqXHR, textStatus, errorThrown) {
-                          console.log('Error: '+jqXHR.status);
-                          console.log('textStatus: '+textStatus)
-                         } 
-                   });
-                });    
-            });
-        });
-        
-        function loginsf(fn){
-             $.ajax({
-                    type: 'POST',
-                    crossOrigin: true,
-                    url: 'https://mc7l7fypk60zp-h7jf6n349dqp54.auth.marketingcloudapis.com',
-                    dataType: 'json',
-                    cache :false,
-                    data : {"grant_type":"password","client_id":"7j3fqj0n0nq7kwgf4a96a8db", "client_secret":"lGDWgIVsL0L8aL0eEzM8ePDJ","username":"sumit.saggar@alhgroup.com.au","password":"Password2@ secritytoken"},
-                    success : function (data) {
-                     fn(data.access_token);
-                    },
-                    error : function (data, errorThrown,status) {
-        
-                    }
-            });
-          }
-            
-        </script>
+    
 </head>
 
 <body>
